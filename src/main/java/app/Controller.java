@@ -212,7 +212,7 @@ public class Controller {
         textField.setMaxWidth(25);
         weightFields.add(textField);
         textField.setId(id);
-        textField.setOnMouseClicked(event -> {
+        textField.setOnMousePressed(event -> {
             defaultLines();
             String clickedId = ((Control) event.getSource()).getId();
             int i = Integer.valueOf(clickedId.substring(6, 7));
@@ -326,11 +326,11 @@ public class Controller {
     public void solveProblem() {
         defaultLines();
         int[][] oldDistances = new int[][]{
-                {0, Integer.valueOf(weightFieldsMatrix[0][1].getText()), Integer.valueOf(weightFieldsMatrix[0][2].getText()), Integer.valueOf(weightFieldsMatrix[0][3].getText()), Integer.valueOf(weightFieldsMatrix[0][4].getText())},
-                {Integer.valueOf(weightFieldsMatrix[1][0].getText()), 0, Integer.valueOf(weightFieldsMatrix[1][2].getText()), Integer.valueOf(weightFieldsMatrix[1][3].getText()), Integer.valueOf(weightFieldsMatrix[1][4].getText())},
-                {Integer.valueOf(weightFieldsMatrix[2][0].getText()), Integer.valueOf(weightFieldsMatrix[2][1].getText()), 0, Integer.valueOf(weightFieldsMatrix[2][3].getText()), Integer.valueOf(weightFieldsMatrix[3][4].getText())},
-                {Integer.valueOf(weightFieldsMatrix[3][0].getText()), Integer.valueOf(weightFieldsMatrix[3][1].getText()), Integer.valueOf(weightFieldsMatrix[3][2].getText()), 0, Integer.valueOf(weightFieldsMatrix[3][4].getText())},
-                {Integer.valueOf(weightFieldsMatrix[4][0].getText()), Integer.valueOf(weightFieldsMatrix[4][1].getText()), Integer.valueOf(weightFieldsMatrix[4][2].getText()), Integer.valueOf(weightFieldsMatrix[4][3].getText()), 0}
+                {0,                                                     Integer.valueOf(weightFieldsMatrix[0][1].getText()),    Integer.valueOf(weightFieldsMatrix[0][2].getText()),    Integer.valueOf(weightFieldsMatrix[0][3].getText()),    Integer.valueOf(weightFieldsMatrix[0][4].getText())},
+                {Integer.valueOf(weightFieldsMatrix[1][0].getText()),   0,                                                      Integer.valueOf(weightFieldsMatrix[1][2].getText()),    Integer.valueOf(weightFieldsMatrix[1][3].getText()),    Integer.valueOf(weightFieldsMatrix[1][4].getText())},
+                {Integer.valueOf(weightFieldsMatrix[2][0].getText()),   Integer.valueOf(weightFieldsMatrix[2][1].getText()),    0,                                                      Integer.valueOf(weightFieldsMatrix[2][3].getText()),    Integer.valueOf(weightFieldsMatrix[2][4].getText())},
+                {Integer.valueOf(weightFieldsMatrix[3][0].getText()),   Integer.valueOf(weightFieldsMatrix[3][1].getText()),    Integer.valueOf(weightFieldsMatrix[3][2].getText()),    0,                                                      Integer.valueOf(weightFieldsMatrix[3][4].getText())},
+                {Integer.valueOf(weightFieldsMatrix[4][0].getText()),   Integer.valueOf(weightFieldsMatrix[4][1].getText()),    Integer.valueOf(weightFieldsMatrix[4][2].getText()),    Integer.valueOf(weightFieldsMatrix[4][3].getText()),    0}
         };
         tabuSearchSalesman = new TabuSearch(oldDistances, start, iterations);
         tabuSearchSalesman.start();
