@@ -301,14 +301,7 @@ public class Controller {
         weightFieldsMatrix[3][4] = textField3;
         weightFieldsMatrix[4][3] = textField3;
 
-        for (int i = 0; i < weightFieldsMatrix.length; i++) {
-            for (int j = 0; j < weightFieldsMatrix.length; j++) {
-                if (i != j) {
-                    Random rand = new Random();
-                    weightFieldsMatrix[i][j].setText(String.valueOf(rand.nextInt((9 - 1) + 1) + 1));
-                }
-            }
-        }
+        generateWeights();
     }
 
     private void defaultLines() {
@@ -326,7 +319,19 @@ public class Controller {
             int col = solution[i + 1];
             Line path = pathsMatrix[row][col];
             path.setStroke(Color.web("#505092"));
-            path.setStrokeWidth(2);
+            path.setStrokeWidth(3);
+        }
+    }
+
+    public void generateWeights() {
+        defaultLines();
+        for (int i = 0; i < weightFieldsMatrix.length; i++) {
+            for (int j = 0; j < weightFieldsMatrix.length; j++) {
+                if (i != j) {
+                    Random rand = new Random();
+                    weightFieldsMatrix[i][j].setText(String.valueOf(rand.nextInt((9 - 1) + 1) + 1));
+                }
+            }
         }
     }
 

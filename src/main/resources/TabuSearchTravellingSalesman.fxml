@@ -9,12 +9,13 @@
 <Pane prefHeight="350.0" prefWidth="600.0" styleClass="rootComponent" stylesheets="tabuSearch.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.Controller">
    <children>
       <AnchorPane fx:id="root" />
-      <Button fx:id="solve" layoutX="443.0" layoutY="14.0" mnemonicParsing="false" onAction="#solveProblem" styleClass="btn" text="Solve" />
+      <Button fx:id="solve" layoutX="497.0" layoutY="6.0" mnemonicParsing="false" onAction="#solveProblem" styleClass="btn" text="Solve" />
       <Label layoutX="481.0" layoutY="314.0" styleClass="lbl" text="Cost:" />
       <Label fx:id="cost" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="510.0" layoutY="314.0" prefHeight="17.0" prefWidth="44.0" styleClass="lbl" text="0" />
       <ComboBox fx:id="iterationCount" layoutX="200.0" layoutY="7.0" prefHeight="25.0" prefWidth="84.0" styleClass="cb" visibleRowCount="3" />
       <Label layoutX="14.0" layoutY="11.0" styleClass="lbl" text="Number of iterations:" />
       <Label layoutX="14.0" layoutY="53.0" styleClass="lbl" text="Tabu list length:" />
       <ComboBox fx:id="tabuListLength" layoutX="200.0" layoutY="49.0" prefHeight="25.0" prefWidth="84.0" styleClass="cb" />
+      <Button fx:id="generate" layoutX="387.0" layoutY="6.0" mnemonicParsing="false" onAction="#generateWeights" styleClass="btn" text="Generate" />
    </children>
 </Pane>

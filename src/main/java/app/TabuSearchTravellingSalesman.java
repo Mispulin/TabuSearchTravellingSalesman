@@ -11,7 +11,7 @@ public class TabuSearchTravellingSalesman extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/TabuSearchTravellingSalesman.fxml"));
-        primaryStage.setTitle("Tabu Search and the Travelling Salesman");
+        primaryStage.setTitle("Tabu Search solving Travelling Salesman Problem");
         primaryStage.setScene(new Scene(root, 570, 350));
         primaryStage.show();
     }
