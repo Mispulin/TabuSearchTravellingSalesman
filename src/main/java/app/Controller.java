@@ -1,6 +1,9 @@
 package app;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -13,6 +16,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import tabuSearch.TabuSearch;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -25,16 +29,41 @@ public class Controller {
     private TextField[][] weightFieldsMatrix = new TextField[5][5];
     private List<Line> paths = new ArrayList<>();
     private List<TextField> weightFields = new ArrayList<>();
+    private final BooleanProperty firstTime = new SimpleBooleanProperty(true);
+    private int iterations = 100;
+    private int tabuLength = 10;
 
     @FXML
     private Label cost;
     @FXML
     private AnchorPane root;
+    @FXML
+    private ComboBox iterationCount;
+    @FXML
+    private ComboBox tabuListLength;
 
     public void initialize() {
         drawPaths();
         drawCities();
         drawWeights();
+        fillIterationCounts();
+        fillTabuListCounts();
+    }
+
+    private void fillIterationCounts() {
+        iterationCount.getItems().addAll(50, 100, 500);
+        iterationCount.setValue(iterations);
+        iterationCount.valueProperty().addListener(((observable, oldValue, newValue) -> {
+            iterations = (int) newValue;
+        }));
+    }
+
+    private void fillTabuListCounts() {
+        tabuListLength.getItems().addAll(5, 10, 20);
+        tabuListLength.setValue(tabuLength);
+        tabuListLength.valueProperty().addListener(((observable, oldValue, newValue) -> {
+            tabuLength = (int) newValue;
+        }));
     }
 
     private void drawPaths() {
@@ -102,6 +131,8 @@ public class Controller {
 
     private void drawCities() {
         List<StackPane> citiesContainers = new ArrayList<>();
+        Color notSelected = Color.web("#F0F0FF");
+        Color selected = Color.web("#9595C6");
 
         // 0 Los Angeles
         StackPane stack0 = new StackPane();
@@ -109,7 +140,7 @@ public class Controller {
         stack0.setTranslateY(110);
         stack0.setId("city0");
         Circle city0 = new Circle(20);
-        city0.setFill(Color.WHITE);
+        city0.setFill(notSelected);
         city0.setStroke(Color.BLACK);
         Text cityLabel0 = new Text("Los Angeles");
         cityLabel0.setFont(Font.font("Amble Cn", FontWeight.BOLD, 14));
@@ -123,7 +154,7 @@ public class Controller {
         stack1.setTranslateY(310);
         stack1.setId("city1");
         Circle city1 = new Circle(10);
-        city1.setFill(Color.WHITE);
+        city1.setFill(notSelected);
         city1.setStroke(Color.BLACK);
         Text cityLabel1 = new Text("Lima");
         cityLabel1.setFont(Font.font("Amble Cn", FontWeight.BOLD, 14));
@@ -137,7 +168,7 @@ public class Controller {
         stack2.setTranslateY(60);
         stack2.setId("city2");
         Circle city2 = new Circle(40);
-        city2.setFill(Color.web("#b7b7d8"));
+        city2.setFill(selected);
         city2.setStroke(Color.BLACK);
         Text cityLabel2 = new Text("London");
         cityLabel2.setFont(Font.font("Amble Cn", FontWeight.BOLD, 14));
@@ -151,7 +182,7 @@ public class Controller {
         stack3.setTranslateY(260);
         stack3.setId("city3");
         Circle city3 = new Circle(18);
-        city3.setFill(Color.WHITE);
+        city3.setFill(notSelected);
         city3.setStroke(Color.BLACK);
         Text cityLabel3 = new Text("Rome");
         cityLabel3.setFont(Font.font("Amble Cn", FontWeight.BOLD, 14));
@@ -165,7 +196,7 @@ public class Controller {
         stack4.setTranslateY(160);
         stack4.setId("city4");
         Circle city4 = new Circle(10);
-        city4.setFill(Color.WHITE);
+        city4.setFill(notSelected);
         city4.setStroke(Color.BLACK);
         Text cityLabel4 = new Text("Prague");
         cityLabel4.setFont(Font.font("Amble Cn", FontWeight.BOLD, 14));
@@ -176,10 +207,10 @@ public class Controller {
         citiesContainers.forEach(city -> city.setOnMouseClicked(e -> {
             citiesContainers.forEach(otherCity -> {
                 Circle otherCircle = (Circle) otherCity.getChildren().get(0);
-                otherCircle.setFill(Color.WHITE);
+                otherCircle.setFill(notSelected);
             });
             Circle circle = (Circle) city.getChildren().get(0);
-            circle.setFill(Color.web("#b7b7d8"));
+            circle.setFill(selected);
             start = Integer.valueOf(city.getId().replaceAll("\\D", ""));
             defaultLines();
         }));
@@ -203,16 +234,23 @@ public class Controller {
             picked.setStroke(Color.web("#505092"));
         });
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            String correctVal = newValue.replaceAll( "[^\\d]", "" );
+            String correctVal = newValue.replaceAll("[^\\d]", "");
             if (correctVal.length() == 0) {
                 correctVal = "5";
             }
             textField.setText(correctVal);
         });
+        textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue && firstTime.get()) {
+                root.requestFocus();
+                firstTime.setValue(false);
+            }
+        });
+        textField.getStyleClass().add("tf");
         root.getChildren().add(textField);
         return textField;
     }
-    
+
     private void drawWeights() {
         // 0 Los Angeles - 1 Lima
         TextField textField0 = getTextField(pathsMatrix[0][1], "field-0-1");
@@ -264,7 +302,7 @@ public class Controller {
         weightFieldsMatrix[4][3] = textField3;
 
         for (int i = 0; i < weightFieldsMatrix.length; i++) {
-            for (int j = 0; j < weightFieldsMatrix.length ; j++) {
+            for (int j = 0; j < weightFieldsMatrix.length; j++) {
                 if (i != j) {
                     Random rand = new Random();
                     weightFieldsMatrix[i][j].setText(String.valueOf(rand.nextInt((9 - 1) + 1) + 1));
@@ -279,17 +317,6 @@ public class Controller {
             path.setStroke(Color.BLACK);
             path.setStrokeWidth(1);
         });
-    }
-
-    private String translateIdToCity(String id) {
-        switch (id) {
-            case "city0": return "Los Angeles";
-            case "city1": return "Lima";
-            case "city2": return "London";
-            case "city3": return "Rome";
-            case "city4": return "Prague";
-            default: return "not specified";
-        }
     }
 
     private void colorSolution() {
@@ -312,7 +339,7 @@ public class Controller {
                 {Integer.valueOf(weightFieldsMatrix[3][0].getText()), Integer.valueOf(weightFieldsMatrix[3][1].getText()), Integer.valueOf(weightFieldsMatrix[3][2].getText()), 0, Integer.valueOf(weightFieldsMatrix[3][4].getText())},
                 {Integer.valueOf(weightFieldsMatrix[4][0].getText()), Integer.valueOf(weightFieldsMatrix[4][1].getText()), Integer.valueOf(weightFieldsMatrix[4][2].getText()), Integer.valueOf(weightFieldsMatrix[4][3].getText()), 0}
         };
-        tabuSearchSalesman = new TabuSearch(oldDistances, start);
+        tabuSearchSalesman = new TabuSearch(oldDistances, start, iterations, tabuLength);
         tabuSearchSalesman.start();
         cost.setText(String.valueOf(tabuSearchSalesman.getCost()));
         colorSolution();

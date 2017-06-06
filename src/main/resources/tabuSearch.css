@@ -1,0 +1,77 @@
+@font-face {
+    -fx-font-family: 'Rob';
+    src: url('fonts/RobotoCondensed-Regular.ttf');
+}
+
+.rootComponent {
+    -fx-background-color: #F0F0FF;
+    -fx-font-size: 13px;
+}
+
+.btn {
+    -fx-padding: 10px 30px 10px 30px;
+    -fx-font-family: 'Rob';
+    -fx-background-color: #9595C6;
+    -fx-font-size: 22px;
+    -fx-text-fill: black;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    -fx-border-width: 1;
+}
+
+.btn:hover {
+    -fx-background-color: #7c7ca7;
+}
+
+.btn:pressed {
+    -fx-background-color: #595977;
+}
+
+.lbl {
+    -fx-font-family: 'Rob';
+    -fx-font-size: 18px;
+    -fx-text-fill: rgba(0, 0, 0, 0.8);
+}
+
+.tf {
+    -fx-padding: 2px 5px 2px 5px;
+    -fx-font-family: 'Rob';
+    -fx-font-size: 12px;
+    -fx-text-fill: rgba(0, 0, 10, 0.8);
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+}
+
+.tf:focused {
+    -fx-background-color:
+            #505092,
+            #FFFFFF;
+}
+
+.cb {
+    -fx-padding: 2px 5px 2px 5px;
+    -fx-font-family: 'Rob';
+    -fx-font-size: 16px;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: #9595C6;
+    -fx-text-fill: black;
+}
+
+.cb .list-cell {
+    -fx-background: white;
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-text-base-color;
+    -fx-padding: 3 0 3 3;
+    -fx-cell-size: 2em;
+}
+
+.cb .list-view .list-cell:selected:focused {
+    -fx-background-color: rgba(149, 149, 198, 0.6);
+    -fx-text-fill: -fx-text-inner-color;
+}
+
+.cb .list-view .list-cell:hover, .cb .list-view .list-cell:selected:hover {
+    -fx-background-color: #9595C6;
+    -fx-text-fill: -fx-text-inner-color;
+}

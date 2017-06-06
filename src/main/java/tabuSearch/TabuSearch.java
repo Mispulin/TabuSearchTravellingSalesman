@@ -9,10 +9,23 @@ public class TabuSearch {
     private int[] solution;
     private int[][] distances;
     private int cost = 0;
+    private int iterations = 100;
+    private int tabuListLength = 10;
+
+    public TabuSearch(int[][] distances) {
+        this.distances = distances;
+    }
 
     public TabuSearch(int[][] distances, int start) {
         this.distances = distances;
         this.start = start;
+    }
+
+    public TabuSearch(int[][] distances, int start, int iterations, int tabuListLength) {
+        this.distances = distances;
+        this.start = start;
+        this.iterations = iterations;
+        this.tabuListLength = tabuListLength;
     }
 
     public int getObjectiveFunctionValue(int solution[]) {
@@ -26,8 +39,7 @@ public class TabuSearch {
         return cost;
     }
 
-    private int[] getBestNeighbour(TabuList tabuList,
-                                   int[] initSolution) {
+    private int[] getBestNeighbour(TabuList tabuList, int[] initSolution) {
 
         int[] bestSol = new int[initSolution.length]; // this is the best Solution So Far
         System.arraycopy(initSolution, 0, bestSol, 0, bestSol.length);
@@ -98,15 +110,13 @@ public class TabuSearch {
 
         int[] currSolution = getInitialSolution();
 
-        int numberOfIterations = 50;
-        int tabuLength = 10;
-        TabuList tabuList = new TabuList(tabuLength);
+        TabuList tabuList = new TabuList(tabuListLength);
 
         solution = new int[currSolution.length];
         System.arraycopy(currSolution, 0, solution, 0, solution.length);
         cost = getObjectiveFunctionValue(solution);
 
-        for (int i = 0; i < numberOfIterations; i++) {
+        for (int i = 0; i < iterations; i++) {
 
             currSolution = getBestNeighbour(tabuList, currSolution);
             int currCost = getObjectiveFunctionValue(currSolution);
