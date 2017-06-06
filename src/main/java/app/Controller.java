@@ -30,8 +30,7 @@ public class Controller {
     private List<Line> paths = new ArrayList<>();
     private List<TextField> weightFields = new ArrayList<>();
     private final BooleanProperty firstTime = new SimpleBooleanProperty(true);
-    private int iterations = 100;
-    private int tabuLength = 10;
+    private int iterations = 50;
 
     @FXML
     private Label cost;
@@ -39,30 +38,19 @@ public class Controller {
     private AnchorPane root;
     @FXML
     private ComboBox iterationCount;
-    @FXML
-    private ComboBox tabuListLength;
 
     public void initialize() {
         drawPaths();
         drawCities();
         drawWeights();
         fillIterationCounts();
-        fillTabuListCounts();
     }
 
     private void fillIterationCounts() {
-        iterationCount.getItems().addAll(50, 100, 500);
+        iterationCount.getItems().addAll(5, 50, 100);
         iterationCount.setValue(iterations);
         iterationCount.valueProperty().addListener(((observable, oldValue, newValue) -> {
             iterations = (int) newValue;
-        }));
-    }
-
-    private void fillTabuListCounts() {
-        tabuListLength.getItems().addAll(5, 10, 20);
-        tabuListLength.setValue(tabuLength);
-        tabuListLength.valueProperty().addListener(((observable, oldValue, newValue) -> {
-            tabuLength = (int) newValue;
         }));
     }
 
@@ -344,7 +332,7 @@ public class Controller {
                 {Integer.valueOf(weightFieldsMatrix[3][0].getText()), Integer.valueOf(weightFieldsMatrix[3][1].getText()), Integer.valueOf(weightFieldsMatrix[3][2].getText()), 0, Integer.valueOf(weightFieldsMatrix[3][4].getText())},
                 {Integer.valueOf(weightFieldsMatrix[4][0].getText()), Integer.valueOf(weightFieldsMatrix[4][1].getText()), Integer.valueOf(weightFieldsMatrix[4][2].getText()), Integer.valueOf(weightFieldsMatrix[4][3].getText()), 0}
         };
-        tabuSearchSalesman = new TabuSearch(oldDistances, start, iterations, tabuLength);
+        tabuSearchSalesman = new TabuSearch(oldDistances, start, iterations);
         tabuSearchSalesman.start();
         cost.setText(String.valueOf(tabuSearchSalesman.getCost()));
         colorSolution();

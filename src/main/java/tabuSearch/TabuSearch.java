@@ -10,7 +10,7 @@ public class TabuSearch {
     private int[][] distances;
     private int cost = 0;
     private int iterations = 100;
-    private int tabuListLength = 10;
+    private int tabuListLength = 5;
 
     public TabuSearch(int[][] distances) {
         this.distances = distances;
@@ -21,11 +21,11 @@ public class TabuSearch {
         this.start = start;
     }
 
-    public TabuSearch(int[][] distances, int start, int iterations, int tabuListLength) {
+    public TabuSearch(int[][] distances, int start, int iterations) {
         this.distances = distances;
         this.start = start;
         this.iterations = iterations;
-        this.tabuListLength = tabuListLength;
+        this.tabuListLength = distances.length;
     }
 
     public int getObjectiveFunctionValue(int solution[]) {
@@ -73,6 +73,7 @@ public class TabuSearch {
         }
 
         if (city1 != 0) {
+            // printTabuList(tabuList.tabuList);
             tabuList.decrementTabu();
             tabuList.tabuMove(city1, city2);
         }
@@ -117,7 +118,7 @@ public class TabuSearch {
         cost = getObjectiveFunctionValue(solution);
 
         for (int i = 0; i < iterations; i++) {
-
+            // printSolution(currSolution);
             currSolution = getBestNeighbour(tabuList, currSolution);
             int currCost = getObjectiveFunctionValue(currSolution);
             if (currCost < cost) {
@@ -133,6 +134,25 @@ public class TabuSearch {
 
     public int[] getSolution() {
         return solution;
+    }
+
+    public void printTabuList(int[][] tabuList) {
+        for (int i = 0; i < tabuList.length; i++) {
+            for (int j = 0; j < tabuList.length; j++) {
+                System.out.print(tabuList[i][j] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+    private void printSolution(int[] solution) {
+        for (int cityId : solution) {
+            System.out.print(cityId + " ");
+        }
+        System.out.print(getObjectiveFunctionValue(solution));
+        System.out.println();
+        System.out.println();
     }
 
     private void printSolution() {
